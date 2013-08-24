@@ -1,0 +1,18 @@
+<h1>Timeline</h1>
+<%=form_for(:post, url:users_timeline_path) do |f| %>
+    <div> Your status</div><%=f.text_area :text %>
+    <%=f.hidden_field :belong,:value => @user.id %>
+    <%=f.submit "POST" %>
+<% end %>
+<% @status.each do |post| %>
+    <ol class="microposts">
+        <li>
+          <span class="content"><%= post.text %></span>
+      <span class="timestamp">
+        Posted <%= time_ago_in_words(post.created_at) %> ago.
+      </span>
+        </li>
+      </ol>
+
+<% end %>
+
