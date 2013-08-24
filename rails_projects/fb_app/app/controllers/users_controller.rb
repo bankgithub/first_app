@@ -2,6 +2,19 @@ class UsersController < ApplicationController
   def show
     @user = current_user;
   end
+  def edit
+    @user = User.find(params[:id])
+  end
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params_update)
+      flash[:success] = "Profile updated"
+      sign_in @user
+      redirect_to @user
+    else
+      render 'edit'
+    end
+  end
   def new
     @user = User.new
   end
@@ -46,7 +59,10 @@ class UsersController < ApplicationController
   end
 
   private
-
+  def user_params_update
+    params.require(:user).permit(:name, :email, :password,
+                                   :password_confirmation)
+  end
   def user_params
     params.require(:signup).permit(:name, :email, :password,
                                  :password_confirmation)
